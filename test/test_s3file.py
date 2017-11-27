@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function
 
 import unittest
 
+import six
 from mock import patch, Mock
 
 from s3file.s3file import S3File
@@ -120,9 +121,9 @@ class TestRead(S3FileTestCase):
     def test_raise_not_open_for_reading(self):
         """should raise IOError if file is not open for reading"""
         with self.make_s3file('w') as subject:
-            self.assertRaisesRegex(IOError, 'not open for reading', subject.read)
-            self.assertRaisesRegex(IOError, 'not open for reading', subject.readline)
-            self.assertRaisesRegex(IOError, 'not open for reading', subject.readlines)
+            six.assertRaisesRegex(self, IOError, 'not open for reading', subject.read)
+            six.assertRaisesRegex(self, IOError, 'not open for reading', subject.readline)
+            six.assertRaisesRegex(self, IOError, 'not open for reading', subject.readlines)
 
         self.assertContentUploaded('')
 
@@ -154,9 +155,9 @@ baz
     def test_raises_not_open_for_writing(self):
         """should raise IOError if the file is not open for writing and is written to"""
         with self.make_s3file('r') as subject:
-            self.assertRaisesRegex(IOError, 'not open for writing', subject.write, 'foo')
-            self.assertRaisesRegex(IOError, 'not open for writing',
-                                    subject.writelines, ['foo', 'bar'])
+            six.assertRaisesRegex(self, IOError, 'not open for writing', subject.write, 'foo')
+            six.assertRaisesRegex(self, IOError, 'not open for writing',
+                                  subject.writelines, ['foo', 'bar'])
 
             self.assertEqual(self.object_mock.upload_fileobj.call_count, 0)
 
@@ -207,6 +208,6 @@ class TestTruncate(S3FileTestCase):
     def test_raises_not_open_for_writing(self):
         """should raise IOError if the file is not open for writing and is written to"""
         with self.make_s3file('r') as subject:
-            self.assertRaisesRegex(IOError, 'not open for writing', subject.truncate)
+            six.assertRaisesRegex(self, IOError, 'not open for writing', subject.truncate)
 
             self.assertEqual(self.object_mock.upload_fileobj.call_count, 0)

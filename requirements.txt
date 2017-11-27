@@ -3,3 +3,4 @@ botocore>=1,<2
 coverage
 mock==2.0.0
 pycodestyle
+six==1.11.0
