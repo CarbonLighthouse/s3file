@@ -12,6 +12,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'boto3>=1,<2',
-        'botocore>=1,<2'
+        'botocore>=1,<2',
+        'six>=1'
     ]
 )
